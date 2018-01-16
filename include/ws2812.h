@@ -1,10 +1,10 @@
 #ifndef __WS2812_H__
 #define __WS2812_H__
 
-#include "string.h"
-
 #include "esp_err.h"
 #include "esp_log.h"
+
+#include <string.h>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -12,6 +12,32 @@
 
 #include "driver/gpio.h"
 #include "driver/rmt.h"
+
+#include "delay.h"
+
+/*
+ * Data transfer times
+ *
+ * WS2812:
+ *
+ * T0H 0.35 us
+ * T0L 0.70 us
+ * T1H 0.80 us
+ * T1L 0.60 us
+ *
+ * WS2812B:
+ *
+ * T0H 0.40 us
+ * T0L 0.80 us
+ * T1H 0.85 us
+ * T1L 0.45 us
+ *
+ */
+
+#define WS2812_T0H 4
+#define WS2812_T0L 8
+#define WS2812_T1H 10
+#define WS2812_T1L 6
 
 typedef struct WS2812_stripe_t {
     gpio_num_t gpio_num;

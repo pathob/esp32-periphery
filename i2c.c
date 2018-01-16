@@ -55,7 +55,11 @@ esp_err_t I2C_master_write_slave_buffer(
     ESP_ERROR_CHECK( i2c_master_start(cmd) );
     ESP_ERROR_CHECK( i2c_master_write_byte(cmd, (i2c_slave_addr << 1) | I2C_MASTER_WRITE, I2C_ACK_CHECK_EN) );
     ESP_ERROR_CHECK( i2c_master_write_byte(cmd, i2c_slave_reg, I2C_ACK_CHECK_EN) );
-    ESP_ERROR_CHECK( i2c_master_write(cmd, data_bytes, data_bytes_num, I2C_ACK_CHECK_EN) );
+
+    if (data_bytes_num) {
+        ESP_ERROR_CHECK( i2c_master_write(cmd, data_bytes, data_bytes_num, I2C_ACK_CHECK_EN) );
+    }
+    
     ESP_ERROR_CHECK( i2c_master_stop(cmd) );
 
     ESP_ERROR_CHECK( i2c_master_cmd_begin(i2c_port, cmd, timeout / portTICK_RATE_MS) );

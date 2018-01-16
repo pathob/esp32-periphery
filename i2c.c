@@ -1,6 +1,7 @@
 #include "i2c.h"
 
 static const char *TAG = "I2C";
+static const uint32_t timeout = 100000;
 
 esp_err_t I2C_init(
         i2c_port_t i2c_port,
@@ -15,13 +16,13 @@ esp_err_t I2C_init(
 
     err = i2c_param_config(i2c_port, i2c_conf);
     if (err) {
-        ESP_LOGE(TAG, "I2C parameter initialization failed\n");
+        ESP_LOGE(TAG, "I2C parameter initialization failed");
         return err;
     }
 
     err = i2c_driver_install(i2c_port, i2c_conf->mode, 0, 0, 0);
     if (err) {
-        ESP_LOGE(TAG, "I2C driver install failed\n");
+        ESP_LOGE(TAG, "I2C driver install failed");
         return err;
     }
 
@@ -51,13 +52,13 @@ esp_err_t I2C_master_write_slave_buffer(
     // esp_err_t err;
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (i2c_slave_addr << 1) | I2C_MASTER_WRITE, I2C_ACK_CHECK_EN);
-    i2c_master_write_byte(cmd, i2c_slave_reg, I2C_ACK_CHECK_EN);
-    i2c_master_write(cmd, data_bytes, data_bytes_num, I2C_ACK_CHECK_EN);
-    i2c_master_stop(cmd);
+    ESP_ERROR_CHECK( i2c_master_start(cmd) );
+    ESP_ERROR_CHECK( i2c_master_write_byte(cmd, (i2c_slave_addr << 1) | I2C_MASTER_WRITE, I2C_ACK_CHECK_EN) );
+    ESP_ERROR_CHECK( i2c_master_write_byte(cmd, i2c_slave_reg, I2C_ACK_CHECK_EN) );
+    ESP_ERROR_CHECK( i2c_master_write(cmd, data_bytes, data_bytes_num, I2C_ACK_CHECK_EN) );
+    ESP_ERROR_CHECK( i2c_master_stop(cmd) );
 
-    i2c_master_cmd_begin(i2c_port, cmd, 1000 / portTICK_RATE_MS);
+    ESP_ERROR_CHECK( i2c_master_cmd_begin(i2c_port, cmd, timeout / portTICK_RATE_MS) );
     i2c_cmd_link_delete(cmd);
 
     return ESP_OK;
@@ -90,18 +91,23 @@ esp_err_t I2C_master_read_slave_buffer(
     // esp_err_t err;
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (i2c_slave_addr << 1) | I2C_MASTER_READ, I2C_ACK_CHECK_EN);
-    i2c_master_write_byte(cmd, i2c_slave_reg, I2C_ACK_CHECK_EN);
+    // write register to read from
+    ESP_ERROR_CHECK( i2c_master_start(cmd) );
+    ESP_ERROR_CHECK( i2c_master_write_byte(cmd, (i2c_slave_addr << 1) | I2C_MASTER_WRITE, I2C_ACK_CHECK_EN) );
+    ESP_ERROR_CHECK( i2c_master_write_byte(cmd, i2c_slave_reg, I2C_ACK_CHECK_EN) );
+
+    // read from register
+    ESP_ERROR_CHECK( i2c_master_start(cmd) );
+    ESP_ERROR_CHECK( i2c_master_write_byte(cmd, (i2c_slave_addr << 1) | I2C_MASTER_READ, I2C_ACK_CHECK_EN) );
 
     if (data_bytes_num > 1) {
-        i2c_master_read(cmd, data_bytes, data_bytes_num - 1, I2C_ACK);
+        ESP_ERROR_CHECK( i2c_master_read(cmd, data_bytes, data_bytes_num - 1, I2C_ACK) );
     }
 
-    i2c_master_read_byte(cmd, data_bytes + data_bytes_num - 1, I2C_NACK);
-    i2c_master_stop(cmd);
+    ESP_ERROR_CHECK( i2c_master_read_byte(cmd, data_bytes + data_bytes_num - 1, I2C_NACK) );
+    ESP_ERROR_CHECK( i2c_master_stop(cmd) );
 
-    i2c_master_cmd_begin(i2c_port, cmd, 1000 / portTICK_RATE_MS);
+    ESP_ERROR_CHECK( i2c_master_cmd_begin(i2c_port, cmd, timeout / portTICK_RATE_MS) );
     i2c_cmd_link_delete(cmd);
 
     return ESP_OK;
@@ -122,7 +128,7 @@ esp_err_t I2C_master_read_slave_bits_msb(
 
     uint8_t data_bytes_num = (data_bits_num_mod == 0) ? data_bits_num_div : data_bits_num_div + 1;
     uint8_t data_bytes[data_bytes_num];
-    I2C_master_read_slave_buffer(i2c_port, i2c_slave_addr, i2c_slave_reg, data_bytes, data_bytes_num);
+    ESP_ERROR_CHECK( I2C_master_read_slave_buffer(i2c_port, i2c_slave_addr, i2c_slave_reg, data_bytes, data_bytes_num) );
 
     uint8_t i = 0;
 
@@ -153,7 +159,7 @@ esp_err_t I2C_master_read_slave_bits_lsb(
 
     uint8_t data_bytes_num = (data_bits_num_mod == 0) ? data_bits_num_div : data_bits_num_div + 1;
     uint8_t data_bytes[data_bytes_num];
-    I2C_master_read_slave_buffer(i2c_port, i2c_slave_addr, i2c_slave_reg, data_bytes, data_bytes_num);
+    ESP_ERROR_CHECK( I2C_master_read_slave_buffer(i2c_port, i2c_slave_addr, i2c_slave_reg, data_bytes, data_bytes_num) );
 
     uint8_t i = 0;
     data_bits_num = data_bytes_num * 8;

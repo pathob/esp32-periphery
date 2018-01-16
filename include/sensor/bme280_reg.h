@@ -41,7 +41,7 @@
 #define BME280_REG_DIG_H2_LSB     0xE1
 #define BME280_REG_DIG_H3_MSB     0xE3
 #define BME280_REG_DIG_H4_MSB     0xE4
-#define BME280_REG_DIG_H5_LSB     0xE5
+#define BME280_REG_DIG_H5_MSB     0xE5
 #define BME280_REG_DIG_H6_MSB     0xE7
 
 #define BME280_MODE_SLEEP         0x00

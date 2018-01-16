@@ -25,39 +25,39 @@ esp_err_t BME280_init(
         uint8_t address);
 
 /**
- * Returns temperature in DegC, resolution is 0.01 DegC. Output value of �5123� equals 51.23 DegC.
+ * Returns temperature in DegC, resolution is 0.01 DegC. Output value of "5123" equals 51.23 DegC.
  * t_fine carries fine temperature as global value
  */
 int32_t BME280_get_temperature_int32();
 
 /**
  * Returns pressure in Pa as unsigned 32 bit integer in Q24.8 format (24 integer bits and 8 fractional bits).
- * Output value of �24674867� represents 24674867/256 = 96386.2 Pa = 963.862 hPa
+ * Output value of "24674867" represents 24674867/256 = 96386.2 Pa = 963.862 hPa
  */
 uint32_t BME280_get_pressure_int64();
 
 /**
  * Returns humidity in %RH as unsigned 32 bit integer in Q22.10 format (22 integer and 10 fractional bits).
- * Output value of �47445� represents 47445/1024 = 46.333 %RH
+ * Output value of "47445" represents 47445/1024 = 46.333 %RH
  */
 uint32_t BME280_get_humidity_int32();
 
 /**
  * Returns temperature in DegC, double precision.
- * Output value of �51.23� equals 51.23 DegC.
+ * Output value of "21.53" equals 21.53 DegC.
  * t_fine carries fine temperature as global value
  */
 double BME280_get_temperature_double();
 
 /**
  * Returns pressure in Pa as double.
- * Output value of �96386.2� equals 96386.2 Pa = 963.862 hPa
+ * Output value of "96386.2" equals 96386.2 Pa = 963.862 hPa
  */
 double BME280_get_pressure_double();
 
 /**
  * Returns humidity in %rH as as double.
- * Output value of �46.332� represents 46.332 %rH
+ * Output value of "46.332" represents 46.332 %rH
  */
 double BME280_get_humidity_double();
 

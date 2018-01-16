@@ -49,7 +49,7 @@ esp_err_t BME280_init(
     }
 
     if ((uint8_t) byte != BME280_ID) {
-        ESP_LOGE(TAG, "Read data does not match BME280_ID");
+        ESP_LOGE(TAG, "Read data %u does not match BME280_ID %u", byte, BME280_ID);
         return ESP_ERR_INVALID_RESPONSE;
     }
 
@@ -98,12 +98,12 @@ esp_err_t BME280_init(
     dig_H4 = (int16_t) data;
     // dig_H5 is a special case, see below
     I2C_master_read_slave_bits_msb(i2c_port, address, BME280_REG_DIG_H6_MSB, &data,  8);
-    dig_H6 = (int8_t)   data;
+    dig_H6 = (int8_t) data;
 
     uint16_t d_H5;
-    I2C_master_read_slave_bits_lsb(i2c_port, address, BME280_REG_DIG_H5_LSB, &data, 12);
+    I2C_master_read_slave_bits_msb(i2c_port, address, BME280_REG_DIG_H5_MSB, &data, 12);
     d_H5 = (uint16_t) data;
-    dig_H5 = (int16_t) ((d_H5 << 4) & 0xFF0) | ((d_H5 >> 8) & 0xF);
+    dig_H5 = (int16_t) ((d_H5 << 8) & 0x0F) | ((d_H5 >> 4) & 0xFF0);
 
     _i2c_port = i2c_port;
     _address = address;
@@ -123,12 +123,10 @@ int32_t BME280_get_temperature_int32()
 
     I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_TEMP_MSB, &data, 20);
 
-    #ifdef DEBUG
-    os_printf("\ndata:   %u", data);
-    os_printf("\ndig_T1: %u", dig_T1);
-    os_printf("\ndig_T2: %d", dig_T2);
-    os_printf("\ndig_T3: %d", dig_T3);
-    #endif
+    ESP_LOGD(TAG, "data:   %lld", data);
+    ESP_LOGD(TAG, "dig_T1: %u", dig_T1);
+    ESP_LOGD(TAG, "dig_T2: %d", dig_T2);
+    ESP_LOGD(TAG, "dig_T3: %d", dig_T3);
 
     adc_T = (int32_t) data;
 
@@ -152,18 +150,17 @@ uint32_t BME280_get_pressure_int64()
 
     I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_PRESS_MSB, &data, 20);
 
-    #ifdef DEBUG
-    os_printf("\ndata:   %u", data);
-    os_printf("\ndig_P1: %u", dig_P1);
-    os_printf("\ndig_P2: %d", dig_P2);
-    os_printf("\ndig_P3: %d", dig_P3);
-    os_printf("\ndig_P4: %d", dig_P4);
-    os_printf("\ndig_P5: %d", dig_P5);
-    os_printf("\ndig_P6: %d", dig_P6);
-    os_printf("\ndig_P7: %d", dig_P7);
-    os_printf("\ndig_P8: %d", dig_P8);
-    os_printf("\ndig_P9: %d", dig_P9);
-    #endif
+    ESP_LOGD(TAG, "data:   %llu", data);
+    ESP_LOGD(TAG, "t_fine: %d", t_fine);
+    ESP_LOGD(TAG, "dig_P1: %u", dig_P1);
+    ESP_LOGD(TAG, "dig_P2: %d", dig_P2);
+    ESP_LOGD(TAG, "dig_P3: %d", dig_P3);
+    ESP_LOGD(TAG, "dig_P4: %d", dig_P4);
+    ESP_LOGD(TAG, "dig_P5: %d", dig_P5);
+    ESP_LOGD(TAG, "dig_P6: %d", dig_P6);
+    ESP_LOGD(TAG, "dig_P7: %d", dig_P7);
+    ESP_LOGD(TAG, "dig_P8: %d", dig_P8);
+    ESP_LOGD(TAG, "dig_P9: %d", dig_P9);
 
     adc_P = (int32_t) data;
 
@@ -194,14 +191,13 @@ uint32_t BME280_get_humidity_int32()
     uint64_t data;
     int32_t adc_H;
 
-    data = I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_HUM_MSB, &data, 16);
+    I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_HUM_MSB, &data, 16);
 
-    #ifdef DEBUG
-    os_printf("\ndata:   %u", data);
-    os_printf("\ndig_H1: %u", dig_H1);
-    os_printf("\ndig_H2: %d", dig_H2);
-    os_printf("\ndig_H3: %u", dig_H3);
-    #endif
+    ESP_LOGD(TAG, "data:   %lld", data);
+    ESP_LOGD(TAG, "t_fine: %d", t_fine);
+    ESP_LOGD(TAG, "dig_H1: %u", dig_H1);
+    ESP_LOGD(TAG, "dig_H2: %d", dig_H2);
+    ESP_LOGD(TAG, "dig_H3: %u", dig_H3);
 
     adc_H = (int32_t) data;
 
@@ -232,14 +228,13 @@ double BME280_get_temperature_double()
     uint64_t data;
     int32_t adc_T;
 
-    data = I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_TEMP_MSB, &data, 20);
+    I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_TEMP_MSB, &data, 20);
 
-    #ifdef DEBUG
-    os_printf("\ndata:   %u", data);
-    os_printf("\ndig_T1: %u", dig_T1);
-    os_printf("\ndig_T2: %d", dig_T2);
-    os_printf("\ndig_T3: %d", dig_T3);
-    #endif
+    ESP_LOGD(TAG, "data:   %lld", data);
+    ESP_LOGD(TAG, "t_fine: %d", t_fine);
+    ESP_LOGD(TAG, "dig_T1: %u", dig_T1);
+    ESP_LOGD(TAG, "dig_T2: %d", dig_T2);
+    ESP_LOGD(TAG, "dig_T3: %d", dig_T3);
 
     adc_T = (int32_t) data;
 
@@ -259,20 +254,19 @@ double BME280_get_pressure_double()
     uint64_t data;
     int32_t adc_P;
 
-    data = I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_PRESS_MSB, &data, 20);
+    I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_PRESS_MSB, &data, 20);
 
-    #ifdef DEBUG
-    os_printf("\ndata:   %u", data);
-    os_printf("\ndig_P1: %u", dig_P1);
-    os_printf("\ndig_P2: %d", dig_P2);
-    os_printf("\ndig_P3: %d", dig_P3);
-    os_printf("\ndig_P4: %d", dig_P4);
-    os_printf("\ndig_P5: %d", dig_P5);
-    os_printf("\ndig_P6: %d", dig_P6);
-    os_printf("\ndig_P7: %d", dig_P7);
-    os_printf("\ndig_P8: %d", dig_P8);
-    os_printf("\ndig_P9: %d", dig_P9);
-    #endif
+    ESP_LOGD(TAG, "data:   %lld", data);
+    ESP_LOGD(TAG, "t_fine: %d", t_fine);
+    ESP_LOGD(TAG, "dig_P1: %u", dig_P1);
+    ESP_LOGD(TAG, "dig_P2: %d", dig_P2);
+    ESP_LOGD(TAG, "dig_P3: %d", dig_P3);
+    ESP_LOGD(TAG, "dig_P4: %d", dig_P4);
+    ESP_LOGD(TAG, "dig_P5: %d", dig_P5);
+    ESP_LOGD(TAG, "dig_P6: %d", dig_P6);
+    ESP_LOGD(TAG, "dig_P7: %d", dig_P7);
+    ESP_LOGD(TAG, "dig_P8: %d", dig_P8);
+    ESP_LOGD(TAG, "dig_P9: %d", dig_P9);
 
     adc_P = (int32_t) data;
 
@@ -302,14 +296,13 @@ double BME280_get_humidity_double()
     uint64_t data;
     int32_t adc_H;
 
-    data = I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_HUM_MSB, &data, 20);
+    I2C_master_read_slave_bits_msb(_i2c_port, _address, BME280_REG_HUM_MSB, &data, 16);
 
-    #ifdef DEBUG
-    os_printf("\ndata:   %u", data);
-    os_printf("\ndig_H1: %u", dig_H1);
-    os_printf("\ndig_H2: %d", dig_H2);
-    os_printf("\ndig_H3: %u", dig_H3);
-    #endif
+    ESP_LOGD(TAG, "data:   %lld", data);
+    ESP_LOGD(TAG, "t_fine: %d", t_fine);
+    ESP_LOGD(TAG, "dig_H1: %u", dig_H1);
+    ESP_LOGD(TAG, "dig_H2: %d", dig_H2);
+    ESP_LOGD(TAG, "dig_H3: %u", dig_H3);
 
     adc_H = (int32_t) data;
 

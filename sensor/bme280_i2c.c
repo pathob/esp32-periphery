@@ -48,7 +48,7 @@ esp_err_t BME280_init(
         return ESP_ERR_INVALID_RESPONSE;
     }
 
-    if ((uint8_t) byte != BME280_ID) {
+    if ((uint8_t) byte != BME280_ID && (uint8_t) byte != BMP280_ID) {
         ESP_LOGE(TAG, "Read data %u does not match BME280_ID %u", byte, BME280_ID);
         return ESP_ERR_INVALID_RESPONSE;
     }

@@ -2,6 +2,7 @@
 #define SENSOR_BME280_REG_H
 
 
+#define BMP280_ID                 0x58
 #define BME280_ID                 0x60
 
 #define BME280_ADDR_LOW           0x76

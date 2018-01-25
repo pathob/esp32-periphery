@@ -1,5 +1,5 @@
-#ifndef __TIME_H__
-#define __TIME_H__
+#ifndef __DELAY_H__
+#define __DELAY_H__
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

@@ -104,6 +104,52 @@ void SSD1306_set_text_6x8(
     }
 }
 
+void SSD1306_fill_pixel(
+    uint8_t x,
+    uint8_t y)
+{
+    uint16_t buffer_offset = (_width * (y / 8)) + x;
+    _buffer[buffer_offset] |= 1 << (y % 8);
+}
+
+void SSD1306_fill_rect(
+    uint8_t x_start,
+    uint8_t y_start,
+    uint8_t x_end,
+    uint8_t y_end)
+{
+    uint8_t i = 0;
+
+    if (x_start > x_end || y_start > y_end) {
+        return;
+    }
+
+    for (uint8_t x = x_start; x <= x_end; x++) {
+        for (uint8_t y = y_start; y <= y_end; y++) {
+            SSD1306_fill_pixel(x, y);
+        }
+    }
+}
+
+void SSD1306_set_bitmap(
+    uint8_t *bitmap,
+    uint8_t width,
+    uint8_t height,
+    uint8_t x_start,
+    uint8_t y_start)
+{
+    uint16_t i = 0;
+    for (uint8_t h = 0; h < height; h++) {
+        for (uint8_t w = 0; w < width; w++) {
+            if (bitmap[i]) {
+                SSD1306_fill_pixel(x_start + w, y_start + h);
+            }
+
+            i++;
+        }
+    }
+}
+
 void SSD1306_display() {
     ESP_ERROR_CHECK( I2C_master_write_slave_byte(_i2c_port, _address, 0x00, SSD1306_COLUMNADDR) );
     ESP_ERROR_CHECK( I2C_master_write_slave_byte(_i2c_port, _address, 0x00, 0) ); // Column start address (0 = reset)

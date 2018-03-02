@@ -31,6 +31,23 @@ void SSD1306_set_text_6x8(
     uint8_t x_start,
     uint8_t y_start);
 
+void SSD1306_fill_pixel(
+    uint8_t x,
+    uint8_t y);
+
+void SSD1306_fill_rect(
+    uint8_t x_start,
+    uint8_t y_start,
+    uint8_t x_end,
+    uint8_t y_end);
+
+void SSD1306_set_bitmap(
+    uint8_t *bitmap,
+    uint8_t width,
+    uint8_t height,
+    uint8_t x_start,
+    uint8_t y_start);
+
 void SSD1306_display();
 
 #endif

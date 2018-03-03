@@ -142,3 +142,17 @@ esp_err_t WS2812_write(
 
     return ESP_OK;
 }
+
+esp_err_t WS2812_reset(
+        struct WS2812_stripe_t *stripe)
+{
+    WS2812_color_t black = { 0, 0, 0 };
+
+    for (uint8_t x = 0; x < stripe->length; x++) {
+        WS2812_set_color(stripe, x, &black);
+    }
+
+    WS2812_write(stripe);
+
+    return ESP_OK;
+}

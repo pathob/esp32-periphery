@@ -68,4 +68,7 @@ esp_err_t WS2812_get_color(
 esp_err_t WS2812_write(
         struct WS2812_stripe_t *stripe);
 
+esp_err_t WS2812_reset(
+        struct WS2812_stripe_t *stripe);
+
 #endif

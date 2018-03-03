@@ -29,13 +29,11 @@ unsigned long IRAM_ATTR micros() {
 void IRAM_ATTR delay_hundred_ns
         (uint64_t hundred_ns) {
 
-    /*
     if (hundred_ns > 10000) {
         uint64_t ms = hundred_ns / 10000;
         hundred_ns = hundred_ns % 10000;
-        vTaskDelay(ms / portTICK_PERIOD_MS);
+        delay_ms(ms);
     }
-    */
 
     uint64_t m = hundred_nanos();
     if (hundred_ns) {
@@ -55,4 +53,10 @@ void IRAM_ATTR delay_us
         (uint64_t us) {
 
     delay_hundred_ns(us * 10);
+}
+
+void IRAM_ATTR delay_ms
+        (uint64_t ms) {
+
+    vTaskDelay(ms / portTICK_PERIOD_MS);
 }

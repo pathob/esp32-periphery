@@ -18,4 +18,7 @@ void IRAM_ATTR delay_hundred_ns
 void IRAM_ATTR delay_us
         (uint64_t us);
 
+void IRAM_ATTR delay_ms
+        (uint64_t ms);
+
 #endif

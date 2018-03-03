@@ -1,4 +1,4 @@
-#include "ws2812.h"
+#include "periph/ws2812.h"
 
 static WS2812_color_t *color_buffers[RMT_CHANNEL_MAX] = { NULL };
 

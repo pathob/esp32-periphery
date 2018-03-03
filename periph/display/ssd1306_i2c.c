@@ -1,4 +1,4 @@
-#include "display/ssd1306_i2c.h"
+#include "periph/display/ssd1306_i2c.h"
 
 static const char *TAG = "SSD1306";
 

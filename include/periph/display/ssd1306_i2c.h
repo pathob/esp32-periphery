@@ -12,11 +12,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "font.h"
-#include "i2c.h"
-#include "display/ssd1306_reg.h"
+#include "periph/font.h"
+#include "periph/font/lcd5x7.h"
 
-#include "font/lcd5x7.h"
+#include "periph/i2c.h"
+#include "periph/display/ssd1306_reg.h"
+
 
 /**
  * Initializes SSD1306 and stores address.

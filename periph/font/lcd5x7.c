@@ -1,4 +1,4 @@
-#include "lcd5x7.h"
+#include "periph/font/lcd5x7.h"
 
 static FONT_6x8_t _lcd5x7 = {
 	.width = 5,

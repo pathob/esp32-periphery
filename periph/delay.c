@@ -1,4 +1,4 @@
-#include "delay.h"
+#include "periph/delay.h"
 
 #define NOP() asm volatile ("nop")
 

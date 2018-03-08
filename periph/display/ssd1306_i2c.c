@@ -22,13 +22,33 @@ esp_err_t SSD1306_init(
         i2c_port_t i2c_port,
         uint8_t address)
 {
+    return SSD1306_init_with_reset(i2c_port, address, GPIO_NUM_MAX);
+}
+
+esp_err_t SSD1306_init_with_reset(
+        i2c_port_t i2c_port,
+        uint8_t address,
+        gpio_num_t gpio_reset)
+{
     esp_err_t err;
+
+    ESP_LOGI(TAG, "Initializing");
 
     _i2c_port = i2c_port;
     _address = address;
 
     _resoltion = _height * _width;
     _buffer = (uint8_t *) malloc(_resoltion);
+
+    // TODO: Improve condition
+    if (gpio_reset != GPIO_NUM_MAX) {
+        gpio_set_direction(gpio_reset, GPIO_MODE_OUTPUT);
+        gpio_set_level(gpio_reset, 1);
+        delay_ms(1);
+        gpio_set_level(gpio_reset, 0);
+        delay_ms(10);
+        gpio_set_level(gpio_reset, 1);
+    }
 
     SSD1306_init_config();
     SSD1306_clear();

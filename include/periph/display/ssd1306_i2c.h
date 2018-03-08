@@ -12,9 +12,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "periph/delay.h"
 #include "periph/font.h"
 #include "periph/font/lcd5x7.h"
-
 #include "periph/i2c.h"
 #include "periph/display/ssd1306_reg.h"
 
@@ -25,6 +25,11 @@
 esp_err_t SSD1306_init(
         i2c_port_t i2c_port,
         uint8_t address);
+
+esp_err_t SSD1306_init_with_reset(
+        i2c_port_t i2c_port,
+        uint8_t address,
+        gpio_num_t gpio_reset);
 
 void SSD1306_set_text_6x8(
     FONT_6x8_t *font,

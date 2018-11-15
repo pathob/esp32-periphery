@@ -50,7 +50,7 @@ esp_err_t WS2812_init(struct WS2812_stripe_t *stripe) {
 esp_err_t WS2812_set_color(
         struct WS2812_stripe_t *stripe,
         uint16_t num,
-        struct WS2812_color_t *color)
+        const struct WS2812_color_t *color)
 {
     color_buffers[stripe->rmt_channel][num] = *color;
     return ESP_OK;

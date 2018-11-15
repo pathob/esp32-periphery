@@ -58,7 +58,7 @@ esp_err_t WS2812_init(
 esp_err_t WS2812_set_color(
         struct WS2812_stripe_t *stripe,
         uint16_t num,
-        struct WS2812_color_t *color);
+        const struct WS2812_color_t *color);
 
 esp_err_t WS2812_get_color(
         struct WS2812_stripe_t *stripe,

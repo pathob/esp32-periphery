@@ -1,4 +1,4 @@
-#include "periph/display/bitmap.h"
+#include "periphery/display/bitmap.h"
 
 // Regex:
 // (([01],){16})\n\t

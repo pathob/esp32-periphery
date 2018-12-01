@@ -1,4 +1,4 @@
-#include "periph/sensor/bme280_i2c.h"
+#include "periphery/sensor/bme280_i2c.h"
 
 static const char *TAG = "BME280";
 

@@ -1,4 +1,4 @@
-#include "periph/i2c.h"
+#include "periphery/i2c.h"
 
 static const char *TAG = "I2C";
 static const uint32_t timeout = 100000;

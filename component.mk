@@ -1,7 +1,7 @@
 #
 # "peripherals" pseudo-component makefile.
 
-SRC_DIRS := $(patsubst $(COMPONENT_PATH)/%/,%,$(sort $(dir $(wildcard $(COMPONENT_PATH)/periph/*/))))
+SRC_DIRS := $(patsubst $(COMPONENT_PATH)/%/,%,$(sort $(dir $(wildcard $(COMPONENT_PATH)/periphery/*/))))
 INCLUDE_DIRS := $(patsubst $(COMPONENT_PATH)/%,%,$(sort $(dir $(wildcard $(COMPONENT_PATH)/include/*/*/))))
 
 COMPONENT_SRCDIRS := $(SRC_DIRS)

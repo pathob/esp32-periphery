@@ -12,11 +12,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "periph/delay.h"
-#include "periph/font.h"
-#include "periph/font/lcd5x7.h"
-#include "periph/i2c.h"
-#include "periph/display/ssd1306_reg.h"
+#include "periphery/delay.h"
+#include "periphery/font.h"
+#include "periphery/font/lcd5x7.h"
+#include "periphery/i2c.h"
+#include "periphery/display/ssd1306_reg.h"
 
 
 /**

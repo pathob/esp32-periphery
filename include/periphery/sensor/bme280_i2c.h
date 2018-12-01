@@ -10,8 +10,8 @@
 #include "esp_log.h"
 #include "driver/i2c.h"
 
-#include "periph/i2c.h"
-#include "periph/sensor/bme280_reg.h"
+#include "periphery/i2c.h"
+#include "periphery/sensor/bme280_reg.h"
 
 int32_t  BME280_temp_sint;
 uint32_t BME280_press_uint;

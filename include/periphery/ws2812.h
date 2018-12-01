@@ -13,7 +13,7 @@
 #include "driver/gpio.h"
 #include "driver/rmt.h"
 
-#include "periph/delay.h"
+#include "periphery/delay.h"
 
 /*
  * Data transfer times

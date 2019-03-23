@@ -55,7 +55,7 @@ typedef struct WS2812_color_t {
 esp_err_t WS2812_init(
         struct WS2812_stripe_t *stripe);
 
-esp_err_t WS2812_set_color(
+esp_err_t IRAM_ATTR WS2812_set_color(
         struct WS2812_stripe_t *stripe,
         uint16_t num,
         const struct WS2812_color_t *color);

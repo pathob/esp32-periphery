@@ -51,7 +51,7 @@ esp_err_t WS2812_init(struct WS2812_stripe_t *stripe) {
     return ESP_OK;
 }
 
-esp_err_t WS2812_set_color(
+esp_err_t IRAM_ATTR WS2812_set_color(
         struct WS2812_stripe_t *stripe,
         uint16_t num,
         const struct WS2812_color_t *color)
@@ -145,7 +145,7 @@ esp_err_t WS2812_write(
     rmt_write_items(channel, items, item_num, 1);
 
     free(items);
-    delay_us(280);
+    delay_us(50);
 
     return ESP_OK;
 }
